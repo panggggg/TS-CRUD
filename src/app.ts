@@ -1,5 +1,6 @@
 import bodyParser from 'body-parser'
 import express, {Request, Response} from 'express'
+import mongoose from 'mongoose'
 
 const app = express()
 const port: number = 3000
