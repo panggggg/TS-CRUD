@@ -15,27 +15,36 @@ export let getBookById = async (req: Request, res: Response) => {
     if (result) {
         res.status(200).send(result)
     }
-    res.status(404).send({ message: 'Not found' })
+    res.status(404).send({ message: `Book id ${bookId} not found` })
 }
 
 export let createBook = async (req: Request, res: Response) => {
     let book: Books = req.body
     const newBook = await new bookModel(book)
-    await newBook.save()
-    res.status(200).send({ message: 'Successfully added' })
+    let result = await newBook.save()
+    if (result) {
+        res.status(200).send({ message: `Successfully created!` })
+    }
+    res.status(404).send({ message: `Can not create book` })
 
 }
 
 export let updateBook = async (req: Request, res: Response) => {
     let bookId: string = req.params.id
     let updateBook: Books = req.body
-    await bookModel.updateOne({ _id: bookId }, { $set: updateBook })
-    res.status(200).send({ message: 'Successfully updated!' })
+    let result = await bookModel.updateOne({ _id: bookId }, { $set: updateBook })
+    if (result) {
+        res.status(200).send({ message: 'Successfully updated!' })
+    }
+    res.status(404).send({ message: `Can not update book` })
 }
 
 export let deleteBookById = async (req: Request, res: Response) => {
     let bookId: string = req.params.id
-    await bookModel.deleteOne({ _id: bookId })
-    res.status(200).send({ message: `Book id ${bookId} has been deleted` })
+    let result = await bookModel.deleteOne({ _id: bookId })
+    if (result) {
+        res.status(200).send({ message: `Book id ${bookId} has been deleted` })
+    }
+    res.status(404).send({ message: `Book id ${bookId} not found!` })
 }
 
