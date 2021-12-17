@@ -29,10 +29,10 @@ const bookSchema = new mongoose.Schema({
         type: String
     },
     authors: {
-        type: String
+        type: Array
     },
     categories: {
-        type: String
+        type: Array
     }
 })
 
