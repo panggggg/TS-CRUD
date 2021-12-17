@@ -6,7 +6,7 @@ const router: Router = Router()
 router.route('/books').get(booksController.getAllBooks)
 router.route('/books/:id').get(booksController.getBookById)
 router.route('/books').post(booksController.createBook)
-router.route('/books/:id').patch(booksController.updateBookById)
-router.route('books/:id').delete(booksController.deleteBookById)
+router.route('/books/:id').patch(booksController.updateBook)
+router.route('/books/:id').delete(booksController.deleteBookById)
 
 export default router
