@@ -2,52 +2,40 @@ import bookModel, { Books } from "../models/book.model"
 import { Request, Response } from 'express'
 
 export let getAllBooks = async (req: Request, res: Response) => {
-    await bookModel.find({}, (err: any, book: Books) => {
-        if (err) {
-            res.send(err)
-        }
-        res.send(book)
-    })
+    let result = await bookModel.find({})
+    if (result) {
+        res.status(200).send(result)
+    }
+    res.status(404).send({ message: 'Not found' })
 }
 
 export let getBookById = async (req: Request, res: Response) => {
     let bookId: string = req.params.id
-    await bookModel.findById({ _id: bookId }, (err: any, book: Books) => {
-        if (err) {
-            res.send(err)
-        }
-        res.send(book)
-    })
+    let result = await bookModel.findById({ _id: bookId })
+    if (result) {
+        res.status(200).send(result)
+    }
+    res.status(404).send({ message: 'Not found' })
 }
 
 export let createBook = async (req: Request, res: Response) => {
-    const newBook = await new bookModel(req.body)
-    newBook.save((err: any, book: Books) => {
-        try {
-            res.status(200).send({ message: 'Successfully added' })
-        } catch (e: any) {
-            res.status(404).send(e.message)
-        }
-    })
+    let book: Books = req.body
+    const newBook = await new bookModel(book)
+    await newBook.save()
+    res.status(200).send({ message: 'Successfully added' })
+
 }
 
-export let updateBookById = async (req: Request, res: Response) => {
+export let updateBook = async (req: Request, res: Response) => {
     let bookId: string = req.params.id
-    await bookModel.findByIdAndUpdate({ _id: bookId }, (err: any, book: Books) => {
-        if (err) {
-            res.status(404).send(err)
-        }
-        res.status(200).send(`Book id ${bookId} has been updated!`)
-    })
+    let updateBook: Books = req.body
+    await bookModel.updateOne({ _id: bookId }, { $set: updateBook })
+    res.status(200).send({ message: 'Successfully updated!' })
 }
 
 export let deleteBookById = async (req: Request, res: Response) => {
     let bookId: string = req.params.id
-    await bookModel.findByIdAndDelete({ _id: bookId }, (err: any, book: Books) => {
-        if (err) {
-            res.status(404).send(err)
-        }
-        res.status(200).send(`Book id ${bookId} has been deleted!`)
-    })
+    await bookModel.deleteOne({ _id: bookId })
+    res.status(200).send({ message: `Book id ${bookId} has been deleted` })
 }
 
