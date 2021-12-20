@@ -2,12 +2,6 @@ import bookModel, { Books } from "../models/book.model"
 import { Request, Response } from 'express'
 
 export let getAllBooks = async (req: Request, res: Response) => {
-    // await bookModel.find({}, (err: any, result: Books) => {
-    //     if(err){
-    //         res.send(err)
-    //     }
-    //     res.status(200).send(result)
-    // })
     let result = await bookModel.find({})
     if (result) {
         return res.status(200).send(result)
@@ -27,12 +21,6 @@ export let getBookById = async (req: Request, res: Response) => {
 export let createBook = async (req: Request, res: Response) => {
     let book: Books = req.body
     const newBook = await new bookModel(book)
-    // await newBook.save((err: any) => {
-    //     if(err){
-    //         res.send(err)
-    //     }
-    //     res.send(book)
-    // })
     let result = await newBook.save()
     if (result) {
         return res.status(200).send({ message: `Successfully created!` })
