@@ -6,11 +6,14 @@ import router from '../src/routes/book.route'
 
 
 const app = express()
-const port: number = config.get('port')
+const port: number = config.get('api.port')
+console.log(port)
 
-const username: string = config.get("mongoUsername")
-const password: string = config.get('mongoPassword')
-mongoose.connect(`mongodb://${username}:${password}@localhost:27017/books-api?authSource=admin`, (err) => {
+const username: string = config.get("mongo.username")
+const password: string = config.get('mongo.password')
+const host: string = config.get("mongo.host")
+const mongoPort: number = config.get("mongo.port")
+mongoose.connect(`mongodb://${username}:${password}@${host}:${mongoPort}/books-api?authSource=admin`, (err) => {
     if (err) throw err;
     console.log('Connected to database')
 })
